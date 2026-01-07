@@ -1,14 +1,13 @@
 import { useEffect } from "react";
 import { Palette, Folder } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { ColorFlowProvider, useColorFlowContext } from "@/contexts/ColorFlowContext";
 import { ColorPicker } from "@/components/ColorPicker";
 import { ColorScaleVisual } from "@/components/ColorScaleVisual";
 import { ColorScaleDetails } from "@/components/ColorScaleDetails";
 import { ExportSection } from "@/components/ExportSection";
 import { SavedPalettes } from "@/components/SavedPalettes";
-import { UIPreview } from "@/components/UIPreview";
+// import { UIPreview } from "@/components/UIPreview";
 
 function AppContent() {
   const {
@@ -57,7 +56,7 @@ function AppContent() {
             className="flex items-center gap-2"
           >
             <Folder className="w-4 h-4" />
-            <span>Paletas ({savedPalettes.length})</span>
+            <span>Paletas Salvas ({savedPalettes.length})</span>
           </Button>
         </div>
 
@@ -80,7 +79,7 @@ function AppContent() {
 
           <ColorScaleDetails />
 
-          <UIPreview />
+          {/* <UIPreview /> */}
 
           <ExportSection />
         </div>

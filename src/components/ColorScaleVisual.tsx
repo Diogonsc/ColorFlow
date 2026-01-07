@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useColorFlowContext } from "@/contexts/ColorFlowContext";
 
 export function ColorScaleVisual() {
-  const { colorScale, colorName, selectColor, selectedColor } = useColorFlowContext();
+  const { colorScale, selectColor, selectedColor } = useColorFlowContext();
   const scales = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
   const handleColorClick = (hex: string) => {

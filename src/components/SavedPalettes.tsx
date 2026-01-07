@@ -1,8 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Folder, Star, Trash2 } from "lucide-react";
-import { useColorFlow } from "@/hooks/useColorFlow";
-import { SavedPalette } from "@/hooks/useColorFlow";
+import type { SavedPalette } from "@/hooks/useColorFlow";
 
 interface SavedPalettesProps {
   palettes: SavedPalette[];
