@@ -1,0 +1,360 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.5rem;
+  /* Tema escuro ColorFlow - baseado no exemplo */
+  --background: #111827;
+  --foreground: #ffffff;
+  --card: #1f2937;
+  --card-foreground: #ffffff;
+  --popover: #1f2937;
+  --popover-foreground: #ffffff;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #374151;
+  --secondary-foreground: #ffffff;
+  --muted: #374151;
+  --muted-foreground: #9ca3af;
+  --accent: #374151;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --border: #374151;
+  --input: #374151;
+  --ring: #3b82f6;
+  --chart-1: #3b82f6;
+  --chart-2: #06b6d4;
+  --chart-3: #8b5cf6;
+  --chart-4: #ec4899;
+  --chart-5: #f59e0b;
+  --sidebar: #1f2937;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #2563eb;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #374151;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #374151;
+  --sidebar-ring: #3b82f6;
+}
+
+.dark {
+  --background: #111827;
+  --foreground: #ffffff;
+  --card: #1f2937;
+  --card-foreground: #ffffff;
+  --popover: #1f2937;
+  --popover-foreground: #ffffff;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #374151;
+  --secondary-foreground: #ffffff;
+  --muted: #374151;
+  --muted-foreground: #9ca3af;
+  --accent: #374151;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --border: #374151;
+  --input: #374151;
+  --ring: #3b82f6;
+  --chart-1: #3b82f6;
+  --chart-2: #06b6d4;
+  --chart-3: #8b5cf6;
+  --chart-4: #ec4899;
+  --chart-5: #f59e0b;
+  --sidebar: #1f2937;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #2563eb;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #374151;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #374151;
+  --sidebar-ring: #3b82f6;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    min-height: 100vh;
+  }
+  
+  /* Estilos para inputs de range customizados */
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    outline: none;
+    background: #4b5563;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: white;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #3b82f6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-top: -6px;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: white;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #3b82f6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  input[type="range"]::-moz-range-track {
+    background: transparent;
+    height: 8px;
+    border-radius: 4px;
+  }
+  
+  /* Estilos para input color */
+  input[type="color"] {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 2px solid #4b5563;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    background: transparent;
+  }
+
+  input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+
+  input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 0.125rem;
+  }
+  
+  /* Scrollbar customizado */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #1f2937;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+  }
+
+  /* Estilos para preview de componentes UI com cor customizada */
+  .ui-preview-wrapper {
+    /* A cor será aplicada via CSS variables */
+  }
+
+  .ui-preview-wrapper [data-slot="button"][data-variant="default"],
+  .ui-preview-wrapper button[data-slot="button"][data-variant="default"] {
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  .ui-preview-wrapper [data-slot="button"][data-variant="default"]:hover,
+  .ui-preview-wrapper button[data-slot="button"][data-variant="default"]:hover {
+    background-color: var(--primary) !important;
+    opacity: 0.9;
+  }
+
+  .ui-preview-wrapper [data-slot="input"]:focus-visible,
+  .ui-preview-wrapper input[data-slot="input"]:focus-visible {
+    border-color: var(--primary) !important;
+    --tw-ring-color: var(--primary) !important;
+  }
+
+  .ui-preview-wrapper [role="checkbox"][data-state="checked"],
+  .ui-preview-wrapper button[role="checkbox"][data-state="checked"] {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  .ui-preview-wrapper [role="switch"][data-state="checked"],
+  .ui-preview-wrapper button[role="switch"][data-state="checked"] {
+    background-color: var(--primary) !important;
+  }
+
+  .ui-preview-wrapper [role="combobox"]:focus-within,
+  .ui-preview-wrapper button[role="combobox"]:focus-within {
+    border-color: var(--primary) !important;
+    --tw-ring-color: var(--primary) !important;
+  }
+
+  /* Sobrescrever o bg-accent padrão quando dentro do preview */
+  .ui-preview-wrapper .focus\:bg-accent:focus {
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  .ui-preview-wrapper [data-highlighted] {
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  .ui-preview-wrapper button[data-highlighted] {
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  .ui-preview-wrapper textarea:focus-visible {
+    border-color: var(--primary) !important;
+    --tw-ring-color: var(--primary) !important;
+  }
+
+  /* Estilos para itens do Select quando destacados/hover */
+  .ui-preview-wrapper [data-radix-select-item][data-highlighted],
+  .ui-preview-wrapper [data-radix-collection-item][data-highlighted],
+  .ui-preview-wrapper [role="option"][data-highlighted],
+  .ui-preview-wrapper button[role="option"][data-highlighted] {
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  /* Estilos específicos para SelectItem do Radix UI - usando data-highlighted */
+  .ui-preview-wrapper [data-radix-select-item][data-highlighted="true"],
+  .ui-preview-wrapper button[data-radix-select-item][data-highlighted="true"] {
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  /* Estilos para SelectItem quando em foco ou hover */
+  .ui-preview-wrapper [data-radix-select-item]:focus,
+  .ui-preview-wrapper button[data-radix-select-item]:focus {
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  /* Estilos para qualquer elemento dentro do SelectContent que esteja destacado */
+  .ui-preview-wrapper [data-radix-select-content] [data-highlighted],
+  .ui-preview-wrapper [data-radix-select-content] button[data-highlighted] {
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  /* Estilos para elementos com focus:bg-accent quando dentro do preview */
+  .ui-preview-wrapper .focus\:bg-accent:focus {
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  /* Estilos mais genéricos para elementos do Radix Select */
+  .ui-preview-wrapper [data-radix-select-viewport] button:hover,
+  .ui-preview-wrapper [data-radix-select-viewport] button:focus,
+  .ui-preview-wrapper [data-radix-select-viewport] [data-highlighted] {
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  /* Estilos específicos para SelectContent dentro do preview */
+  .ui-preview-select-content button:hover,
+  .ui-preview-select-content button:focus,
+  .ui-preview-select-content [data-highlighted],
+  .ui-preview-select-content button[data-highlighted] {
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  /* Estilos para SelectItem dentro do SelectContent do preview */
+  .ui-preview-wrapper .ui-preview-select-content [data-radix-select-item]:hover,
+  .ui-preview-wrapper .ui-preview-select-content [data-radix-select-item]:focus,
+  .ui-preview-wrapper .ui-preview-select-content [data-radix-select-item][data-highlighted] {
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  /* Estilos para qualquer botão dentro do SelectContent que tenha a classe focus:bg-accent */
+  .ui-preview-wrapper .ui-preview-select-content button.focus\:bg-accent:focus,
+  .ui-preview-wrapper .ui-preview-select-content [class*="focus:bg-accent"]:focus {
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  /* Estilos para Badge */
+  .ui-preview-wrapper [class*="Badge"][data-variant="default"],
+  .ui-preview-wrapper div[class*="Badge"][data-variant="default"] {
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  /* Estilos para Calendar - dia selecionado */
+  .ui-preview-wrapper [class*="rdp-day_selected"],
+  .ui-preview-wrapper button[class*="rdp-day_selected"] {
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  /* Estilos para Calendar - dia em foco */
+  .ui-preview-wrapper [class*="rdp-day"]:focus,
+  .ui-preview-wrapper button[class*="rdp-day"]:focus {
+    background-color: var(--primary) !important;
+    color: var(--primary-foreground) !important;
+  }
+
+  /* Estilos para Pagination - link ativo */
+  .ui-preview-wrapper [aria-current="page"],
+  .ui-preview-wrapper a[aria-current="page"] {
+    border-color: var(--primary) !important;
+  }
+}
