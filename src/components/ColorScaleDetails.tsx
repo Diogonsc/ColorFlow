@@ -29,7 +29,7 @@ export function ColorScaleDetails() {
         <CardTitle className="text-lg font-semibold">Detalhes da Escala</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="flex flex-col gap-3">
           {scales.map((scale) => {
             const color = colorScale[scale];
             if (!color) return null;
