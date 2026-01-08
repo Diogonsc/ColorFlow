@@ -48,17 +48,19 @@ function AppContent() {
       {/* Layout com anúncios laterais */}
       <div className="flex gap-4 max-w-7xl mx-auto px-4 py-6 items-start">
         {/* Anúncio lateral esquerda - oculto em mobile */}
-        <aside className="hidden lg:block w-48 xl:w-64 flex-shrink-0 sticky top-6 self-start" aria-label="Publicidade lateral esquerda">
-          <AdSense
-            adSlot="1234567890"
-            format="vertical"
-            width={ADSENSE_CONFIG.sizes.vertical.width}
-            height={ADSENSE_CONFIG.sizes.vertical.height}
-          />
-        </aside>
+        {ADSENSE_CONFIG.enabled && (
+          <aside className="hidden lg:block w-48 xl:w-64 flex-shrink-0 sticky top-6 self-start" aria-label="Publicidade lateral esquerda">
+            <AdSense
+              adSlot={ADSENSE_CONFIG.adSlots.sidebarLeft}
+              format="vertical"
+              width={ADSENSE_CONFIG.sizes.vertical.width}
+              height={ADSENSE_CONFIG.sizes.vertical.height}
+            />
+          </aside>
+        )}
 
         {/* Conteúdo principal */}
-        <main className="flex-1 min-w-0 max-w-3xl mx-auto px-4 lg:px-0">
+        <main className="flex-1 min-w-0 max-w-3xl mx-auto lg:px-0">
           <header className="flex items-center justify-between mb-6 pb-4 border-b border-border">
             <div className="flex items-center gap-3">
               <img src={logo} alt="ElevenTones" className="w-40 h-auto" />
@@ -75,13 +77,15 @@ function AppContent() {
           </header>
 
           {/* Anúncio abaixo do header - apenas em mobile */}
-          <aside className="mb-6 lg:hidden" aria-label="Publicidade">
-            <AdSense
-              adSlot="1234567890"
-              format="horizontal"
-              className="my-6"
-            />
-          </aside>
+          {ADSENSE_CONFIG.enabled && (
+            <aside className="mb-6 lg:hidden" aria-label="Publicidade">
+              <AdSense
+                adSlot={ADSENSE_CONFIG.adSlots.mobileHeader}
+                format="horizontal"
+                className="my-6"
+              />
+            </aside>
+          )}
 
           {showPalettes && (
             <section className="mb-6" aria-label="Paletas salvas">
@@ -116,26 +120,30 @@ function AppContent() {
           </div>
 
           {/* Anúncio no final da página */}
-          <aside className="mt-8" aria-label="Publicidade">
-            <AdSense
-              adSlot="1234567890"
-              format="horizontal"
-              className="my-6"
-            />
-          </aside>
+          {ADSENSE_CONFIG.enabled && (
+            <aside className="mt-8" aria-label="Publicidade">
+              <AdSense
+                adSlot={ADSENSE_CONFIG.adSlots.pageFooter}
+                format="horizontal"
+                className="my-6"
+              />
+            </aside>
+          )}
         </main>
 
         {/* Anúncio lateral direita - oculto em mobile */}
-        <aside className="hidden lg:block w-48 xl:w-64 flex-shrink-0 sticky top-6 self-start" aria-label="Publicidade lateral direita">
-          <div className="flex justify-end">
-            <AdSense
-              adSlot="1234567890"
-              format="vertical"
-              width={ADSENSE_CONFIG.sizes.vertical.width}
-              height={ADSENSE_CONFIG.sizes.vertical.height}
-            />
-          </div>
-        </aside>
+        {ADSENSE_CONFIG.enabled && (
+          <aside className="hidden lg:block w-48 xl:w-64 flex-shrink-0 sticky top-6 self-start" aria-label="Publicidade lateral direita">
+            <div className="flex justify-end">
+              <AdSense
+                adSlot={ADSENSE_CONFIG.adSlots.sidebarRight}
+                format="vertical"
+                width={ADSENSE_CONFIG.sizes.vertical.width}
+                height={ADSENSE_CONFIG.sizes.vertical.height}
+              />
+            </div>
+          </aside>
+        )}
       </div>
     </div>
   );

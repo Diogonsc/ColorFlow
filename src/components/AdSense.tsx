@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ADSENSE_CONFIG } from '@/config/adsense';
 
 interface AdSenseProps {
@@ -60,7 +60,10 @@ export function AdSense({
   style,
 }: AdSenseProps) {
   const adRef = useRef<HTMLDivElement>(null);
+  const insRef = useRef<HTMLElement>(null);
   const adInitialized = useRef(false);
+  const [adLoaded, setAdLoaded] = useState(false);
+  const [shouldHide, setShouldHide] = useState(false);
 
   useEffect(() => {
     // Não inicializar em desenvolvimento ou se já foi inicializado
@@ -72,6 +75,7 @@ export function AdSense({
       // Verifica se o script do AdSense está carregado
       if (typeof window.adsbygoogle === 'undefined') {
         console.warn('Google AdSense script não foi carregado');
+        setShouldHide(true);
         return;
       }
 
@@ -80,26 +84,70 @@ export function AdSense({
       adInitialized.current = true;
     } catch (error) {
       console.error('Erro ao inicializar AdSense:', error);
+      setShouldHide(true);
     }
   }, [adSlot]);
 
-  // Não renderizar se AdSense estiver desabilitado
-  if (!ADSENSE_CONFIG.enabled) {
-    return (
-      <div 
-        className={`bg-gray-100 dark:bg-gray-800 border border-dashed border-gray-300 dark:border-gray-700 rounded p-4 text-center text-sm text-gray-500 dark:text-gray-400 ${className}`}
-        style={{
-          ...style,
-          ...(width && height ? { width: `${width}px`, height: `${height}px`, minHeight: `${height}px` } : {}),
-        }}
-      >
-        <p>Anúncio (AdSense desabilitado em desenvolvimento)</p>
-        <p className="text-xs mt-1">Slot: {adSlot}</p>
-        {width && height && (
-          <p className="text-xs mt-1">Tamanho: {width}x{height}px</p>
-        )}
-      </div>
-    );
+  // Observa se o anúncio foi carregado
+  useEffect(() => {
+    if (!ADSENSE_CONFIG.enabled || !insRef.current || adInitialized.current === false) {
+      return;
+    }
+
+    // Timeout para verificar se o anúncio carregou
+    const checkTimeout = setTimeout(() => {
+      if (!insRef.current) return;
+
+      // Verifica se há conteúdo no elemento ins
+      const hasContent = insRef.current.children.length > 0 || 
+                        insRef.current.offsetHeight > 0 ||
+                        insRef.current.innerHTML.trim().length > 0;
+
+      if (hasContent) {
+        setAdLoaded(true);
+      } else {
+        // Se após 3 segundos não houver conteúdo, oculta o espaço
+        setShouldHide(true);
+      }
+    }, 3000);
+
+    // Observer para detectar quando o anúncio é carregado
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.addedNodes.length > 0 || mutation.type === 'childList') {
+          const hasContent = insRef.current && (
+            insRef.current.children.length > 0 ||
+            insRef.current.offsetHeight > 0 ||
+            insRef.current.innerHTML.trim().length > 0
+          );
+          
+          if (hasContent) {
+            setAdLoaded(true);
+            observer.disconnect();
+            clearTimeout(checkTimeout);
+          }
+        }
+      });
+    });
+
+    if (insRef.current) {
+      observer.observe(insRef.current, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['style', 'class'],
+      });
+    }
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(checkTimeout);
+    };
+  }, [adSlot, adInitialized.current]);
+
+  // Não renderizar se AdSense estiver desabilitado ou se não houver anúncio
+  if (!ADSENSE_CONFIG.enabled || shouldHide) {
+    return null;
   }
 
   // Se width e height são fornecidos, não usar full-width-responsive
@@ -109,9 +157,15 @@ export function AdSense({
     <div 
       ref={adRef}
       className={`adsense-container ${className}`}
-      style={style}
+      style={{
+        ...style,
+        // Só mostra espaço mínimo se o anúncio ainda não carregou
+        minHeight: adLoaded ? undefined : (height ? `${height}px` : '90px'),
+        display: shouldHide ? 'none' : 'block',
+      }}
     >
       <ins
+        ref={insRef}
         className="adsbygoogle"
         style={{
           display: 'block',
