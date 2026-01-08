@@ -26,7 +26,8 @@ export function AdSenseWrapper({
   ariaLabel,
   ...adSenseProps
 }: AdSenseWrapperProps) {
-  const [shouldRender, setShouldRender] = useState(true);
+  const [shouldRender, setShouldRender] = useState(false); // Inicia como false
+  const [hasContent, setHasContent] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
   const checkTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
@@ -76,18 +77,17 @@ export function AdSenseWrapper({
         }
       });
 
-      if (!hasContent) {
-        // Aguarda mais um pouco antes de ocultar
+      if (hasContent) {
+        // Se encontrou conteúdo, mostra o aside
+        setHasContent(true);
+        setShouldRender(true);
         if (checkTimeoutRef.current) {
           clearTimeout(checkTimeoutRef.current);
         }
-        checkTimeoutRef.current = setTimeout(() => {
-          setShouldRender(false);
-        }, 2000);
       } else {
-        if (checkTimeoutRef.current) {
-          clearTimeout(checkTimeoutRef.current);
-        }
+        // Se não encontrou conteúdo, mantém oculto
+        setHasContent(false);
+        setShouldRender(false);
       }
     };
 
@@ -109,16 +109,15 @@ export function AdSenseWrapper({
     };
   }, []);
 
-  if (!shouldRender) {
-    return null;
-  }
-
+  // Sempre renderiza, mas com display: none por padrão
+  // Só mostra quando shouldRender for true
   if (asAside) {
     return (
       <aside 
         ref={containerRef as React.RefObject<HTMLElement>}
         className={containerClassName} 
         aria-label={ariaLabel}
+        style={{ display: shouldRender && hasContent ? 'block' : 'none' }}
       >
         <AdSense {...adSenseProps} />
       </aside>
@@ -126,7 +125,11 @@ export function AdSenseWrapper({
   }
 
   return (
-    <div ref={containerRef as React.RefObject<HTMLDivElement>} className={containerClassName}>
+    <div 
+      ref={containerRef as React.RefObject<HTMLDivElement>} 
+      className={containerClassName}
+      style={{ display: shouldRender && hasContent ? 'block' : 'none' }}
+    >
       <AdSense {...adSenseProps} />
     </div>
   );
