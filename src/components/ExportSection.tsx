@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,6 +9,7 @@ import { hexToRgb } from "@/lib/colorUtils";
 import { trackEvent } from "@/lib/gtag";
 
 export function ExportSection() {
+  const { t } = useTranslation();
   const { colorScale, colorName, setMessage } = useColorFlowContext();
   const [showModal, setShowModal] = useState(false);
   const [exportContent, setExportContent] = useState("");
@@ -23,14 +25,14 @@ export function ExportSection() {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);
-      setMessage("Copiado para área de transferência!", "success");
+      setMessage(t("messages.copied"), "success");
       setTimeout(() => setCopied(false), 2000);
       
       // Rastreia a cópia do conteúdo exportado
       trackEvent('copy_export', 'engagement', format || exportTitle, undefined);
     } catch (err) {
       console.error("Erro ao copiar:", err);
-      setMessage("Erro ao copiar. Use Ctrl+C para copiar manualmente.", "error");
+      setMessage(t("messages.copyError"), "error");
     }
   };
 
@@ -48,7 +50,7 @@ export function ExportSection() {
 
   const exportAsCSS = () => {
     if (!colorScale || Object.keys(colorScale).length === 0) {
-      setMessage("Nenhuma escala de cores disponível", "error");
+      setMessage(t("messages.noColorScale"), "error");
       return;
     }
 
@@ -63,12 +65,12 @@ export function ExportSection() {
     css += `}\n`;
     css += `\n/* Usage: var(--${colorName}-500) */\n`;
 
-    showExportModal(css, "CSS Variables");
+    showExportModal(css, t("export.cssVariables"));
   };
 
   const exportAsTailwind = () => {
     if (!colorScale || Object.keys(colorScale).length === 0) {
-      setMessage("Nenhuma escala de cores disponível", "error");
+      setMessage(t("messages.noColorScale"), "error");
       return;
     }
 
@@ -90,12 +92,12 @@ export function ExportSection() {
     tw += `  },\n`;
     tw += `}\n`;
 
-    showExportModal(tw, "Tailwind Config");
+    showExportModal(tw, t("export.tailwind"));
   };
 
   const exportAsJSON = () => {
     if (!colorScale || Object.keys(colorScale).length === 0) {
-      setMessage("Nenhuma escala de cores disponível", "error");
+      setMessage(t("messages.noColorScale"), "error");
       return;
     }
 
@@ -126,12 +128,12 @@ export function ExportSection() {
       2
     );
 
-    showExportModal(json, "JSON");
+    showExportModal(json, t("export.json"));
   };
 
   const exportAsFigma = () => {
     if (!colorScale || Object.keys(colorScale).length === 0) {
-      setMessage("Nenhuma escala de cores disponível", "error");
+      setMessage(t("messages.noColorScale"), "error");
       return;
     }
 
@@ -165,7 +167,7 @@ export function ExportSection() {
     figma += `      color: { r: color.r, g: color.g, b: color.b }\n`;
     figma += `    }];\n`;
     figma += `  }\n`;
-    figma += `  figma.notify(\`${sortedScales.length} estilos de cor criados!\`);\n`;
+    figma += `  figma.notify(\`${t("messages.figmaCreated", { count: sortedScales.length })}\`);\n`;
     figma += `  figma.closePlugin();\n`;
     figma += `}\n\n`;
     figma += `createColorStyles();\n`;
@@ -173,52 +175,52 @@ export function ExportSection() {
     // Rastreia a conversão de exportação Figma
     trackEvent('export_figma', 'conversion', 'Figma Plugin File');
     
-    showExportModal(figma, "Figma Plugin Script");
+    showExportModal(figma, t("export.figma"));
   };
 
   return (
     <>
       <Card className="bg-card border-border">
         <CardHeader className="pb-4">
-          <CardTitle className="text-lg font-semibold">Exportar</CardTitle>
+          <CardTitle className="text-lg font-semibold">{t("export.title")}</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 gap-3" role="group" aria-label="Opções de exportação">
+          <div className="grid grid-cols-2 gap-3" role="group" aria-label={t("aria.exportOptions")}>
             <Button
               variant="default"
               onClick={exportAsCSS}
               className="flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-600"
-              aria-label="Exportar como variáveis CSS"
+              aria-label={t("export.exportAsCSS")}
             >
               <Upload className="w-4 h-4" aria-hidden="true" />
-              CSS Variables
+              {t("export.cssVariables")}
             </Button>
             <Button
               variant="default"
               onClick={exportAsTailwind}
               className="flex items-center justify-center gap-2 bg-cyan-700 hover:bg-cyan-600"
-              aria-label="Exportar como configuração Tailwind"
+              aria-label={t("export.exportAsTailwind")}
             >
               <Upload className="w-4 h-4" aria-hidden="true" />
-              Tailwind
+              {t("export.tailwind")}
             </Button>
             <Button
               variant="default"
               onClick={exportAsJSON}
               className="flex items-center justify-center gap-2 bg-purple-700 hover:bg-purple-600"
-              aria-label="Exportar como JSON"
+              aria-label={t("export.exportAsJSON")}
             >
               <Upload className="w-4 h-4" aria-hidden="true" />
-              JSON
+              {t("export.json")}
             </Button>
             <Button
               variant="default"
               onClick={exportAsFigma}
               className="flex items-center justify-center gap-2 bg-pink-700 hover:bg-pink-600"
-              aria-label="Exportar como script do Figma"
+              aria-label={t("export.exportAsFigma")}
             >
               <Upload className="w-4 h-4" aria-hidden="true" />
-              Figma
+              {t("export.figma")}
             </Button>
           </div>
         </CardContent>
@@ -244,14 +246,14 @@ export function ExportSection() {
                 {copied && (
                   <span className="text-sm text-green-400 flex items-center gap-1" role="status" aria-live="polite">
                     <Check className="w-4 h-4" aria-hidden="true" />
-                    Copiado!
+                    {t("export.modal.copied")}
                   </span>
                 )}
                 <Button
                   variant="ghost"
                   size="icon-sm"
                   onClick={() => setShowModal(false)}
-                  aria-label="Fechar modal de exportação"
+                  aria-label={t("export.modal.close")}
                 >
                   <X className="w-4 h-4" aria-hidden="true" />
                 </Button>
@@ -259,7 +261,7 @@ export function ExportSection() {
             </CardHeader>
             <CardContent className="flex-1 overflow-hidden flex flex-col">
               <div className="relative flex-1 overflow-hidden">
-                <label htmlFor="export-content" className="sr-only">Conteúdo exportado</label>
+                <label htmlFor="export-content" className="sr-only">{t("export.modal.exportedContent")}</label>
                 <Textarea
                   id="export-content"
                   readOnly
@@ -269,28 +271,28 @@ export function ExportSection() {
                     (e.target as HTMLTextAreaElement).select();
                     copyToClipboard(exportContent, exportTitle);
                   }}
-                  aria-label="Conteúdo exportado, clique para selecionar e copiar"
+                  aria-label={t("export.modal.exportedContent")}
                 />
               </div>
               <div className="flex items-center justify-between mt-4">
                 <p className="text-sm text-muted-foreground">
-                  Clique no código para selecionar e copiar, ou use o botão abaixo
+                  {t("export.modal.clickToSelect")}
                 </p>
                 <Button
                   variant="default"
                   onClick={() => copyToClipboard(exportContent, exportTitle)}
                   className="flex items-center gap-2"
-                  aria-label="Copiar conteúdo para área de transferência"
+                  aria-label={t("export.modal.copy")}
                 >
                   {copied ? (
                     <>
                       <Check className="w-4 h-4" aria-hidden="true" />
-                      Copiado!
+                      {t("export.modal.copied")}
                     </>
                   ) : (
                     <>
                       <Copy className="w-4 h-4" aria-hidden="true" />
-                      Copiar
+                      {t("export.modal.copy")}
                     </>
                   )}
                 </Button>

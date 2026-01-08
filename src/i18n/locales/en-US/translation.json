@@ -1,0 +1,102 @@
+{
+  "app": {
+    "title": "ColorFlow",
+    "palettes": {
+      "saved": "Palettes",
+      "savedCount": "Palettes ({{count}})",
+      "show": "Show",
+      "hide": "Hide",
+      "showPalettes": "Show saved palettes",
+      "hidePalettes": "Hide saved palettes",
+      "none": "No saved palettes yet",
+      "delete": "Delete Palette",
+      "deleteConfirm": "Are you sure you want to delete the palette <strong>{{name}}</strong>? This action cannot be undone.",
+      "cancel": "Cancel",
+      "deleteAction": "Delete",
+      "apply": "Apply",
+      "favorite": "Add to favorites",
+      "unfavorite": "Remove from favorites"
+    }
+  },
+  "colorPicker": {
+    "baseColor": "Base Color",
+    "colorSelector": "Color selector",
+    "hexInput": "Hexadecimal color code",
+    "hexPlaceholder": "#1E80F1",
+    "randomColor": "Generate random color",
+    "eyeDropper": "Capture color from screen using eyedropper",
+    "pasteColor": "Paste color from clipboard",
+    "pasteColorShortcut": "Paste color (Ctrl/Cmd + V)",
+    "tip": "Tip",
+    "tipText": "Press <kbd>Ctrl+V</kbd> or <kbd>⌘+V</kbd> to paste copied colors (HEX, RGB, HSL)",
+    "variableName": "Variable Name",
+    "variableNamePlaceholder": "primary",
+    "savePalette": "Save Palette"
+  },
+  "colorScale": {
+    "title": "Color Scale",
+    "details": "Scale Details",
+    "visualization": "Color scale visualization",
+    "visualAriaLabel": "Visual color scale",
+    "selectColor": "Click to select {{hex}}",
+    "copyHex": "Copy hexadecimal code {{hex}}",
+    "colorLabel": "Color {{scale}}: {{hex}}{{selected}}",
+    "selected": ", selected",
+    "scaleValues": "Scale values"
+  },
+  "hsl": {
+    "controls": "HSL Controls (Hue, Saturation, Lightness)",
+    "adjustments": "HSL Adjustments",
+    "hue": "H (Hue)",
+    "saturation": "S (Saturation)",
+    "lightness": "L (Lightness)",
+    "hueLabel": "Color hue",
+    "saturationLabel": "Color saturation",
+    "lightnessLabel": "Color lightness"
+  },
+  "export": {
+    "title": "Export",
+    "cssVariables": "CSS Variables",
+    "tailwind": "Tailwind",
+    "json": "JSON",
+    "figma": "Figma",
+    "exportAsCSS": "Export as CSS variables",
+    "exportAsTailwind": "Export as Tailwind configuration",
+    "exportAsJSON": "Export as JSON",
+    "exportAsFigma": "Export as Figma script",
+    "modal": {
+      "close": "Close export modal",
+      "clickToSelect": "Click on the code to select and copy, or use the button below",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "exportedContent": "Exported content, click to select and copy"
+    }
+  },
+  "messages": {
+    "copied": "Copied to clipboard!",
+    "copyError": "Error copying. Use Ctrl+C to copy manually.",
+    "noColorScale": "No color scale available",
+    "figmaCreated": "{{count}} color styles created!"
+  },
+  "aria": {
+    "adLeft": "Left sidebar advertisement",
+    "adRight": "Right sidebar advertisement",
+    "ad": "Advertisement",
+    "savedPalettes": "Saved palettes",
+    "colorSelector": "Color selector",
+    "colorScale": "Color scale visualization",
+    "colorScaleDetails": "Color scale details",
+    "export": "Color export",
+    "colorControls": "Color selection controls",
+    "usageTip": "Usage tip",
+    "paletteList": "Saved palettes list",
+    "paletteActions": "Actions for palette {{name}}",
+    "paletteColors": "Color scale for palette {{name}}",
+    "exportOptions": "Export options"
+  },
+  "language": {
+    "select": "Select language",
+    "ptBR": "Portuguese (Brazil)",
+    "enUS": "English (US)"
+  }
+}

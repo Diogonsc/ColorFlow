@@ -9,11 +9,13 @@ import {
   Lightbulb,
   Save,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useColorFlowContext } from "@/contexts/ColorFlowContext";
 import { useEyeDropper } from "@/hooks/useEyeDropper";
 import { HSLSliders } from "./HSLSliders";
 
 export function ColorPicker() {
+  const { t } = useTranslation();
   const {
     baseColor,
     colorName,
@@ -51,7 +53,7 @@ export function ColorPicker() {
     <Card className="bg-card border-border">
       <CardContent className="p-5">
         <header className="flex items-center justify-between mb-3">
-          <Label className="text-sm font-medium">Cor Base</Label>
+          <Label className="text-sm font-medium">{t("colorPicker.baseColor")}</Label>
           {message.text && (
             <span
               className={`text-sm ${
@@ -65,34 +67,34 @@ export function ColorPicker() {
           )}
         </header>
 
-        <div className="flex gap-3 items-center mb-4" role="group" aria-label="Controles de seleção de cor">
+        <div className="flex gap-3 items-center mb-4" role="group" aria-label={t("aria.colorControls")}>
           <div className="relative">
-            <label htmlFor="color-picker" className="sr-only">Seletor de cor</label>
+            <label htmlFor="color-picker" className="sr-only">{t("colorPicker.colorSelector")}</label>
             <input
               id="color-picker"
               type="color"
               value={baseColor}
               onChange={handleColorInputChange}
               className="w-16 h-16 rounded cursor-pointer border-2 border-border"
-              aria-label="Seletor de cor visual"
+              aria-label={t("colorPicker.colorSelector")}
             />
           </div>
-          <label htmlFor="hex-input" className="sr-only">Código hexadecimal da cor</label>
+          <label htmlFor="hex-input" className="sr-only">{t("colorPicker.hexInput")}</label>
           <Input
             id="hex-input"
             type="text"
             value={baseColor}
             onChange={handleHexChange}
             className="flex-1 font-mono text-lg"
-            placeholder="#1E80F1"
-            aria-label="Código hexadecimal da cor"
+            placeholder={t("colorPicker.hexPlaceholder")}
+            aria-label={t("colorPicker.hexInput")}
           />
           <Button
             variant="secondary"
             size="icon"
             onClick={randomColor}
-            title="Cor aleatória"
-            aria-label="Gerar cor aleatória"
+            title={t("colorPicker.randomColor")}
+            aria-label={t("colorPicker.randomColor")}
           >
             <RotateCcw className="w-5 h-5" />
           </Button>
@@ -101,9 +103,9 @@ export function ColorPicker() {
               variant="secondary"
               size="icon"
               onClick={handleEyeDropper}
-              title="Capturar cor da tela"
+              title={t("colorPicker.eyeDropper")}
               className="bg-purple-600 hover:bg-purple-700"
-              aria-label="Capturar cor da tela usando conta-gotas"
+              aria-label={t("colorPicker.eyeDropper")}
             >
               <Pipette className="w-5 h-5" />
             </Button>
@@ -112,20 +114,24 @@ export function ColorPicker() {
             variant="secondary"
             size="icon"
             onClick={pasteColor}
-            title="Colar cor (Ctrl/Cmd + V)"
+            title={t("colorPicker.pasteColorShortcut")}
             className="bg-green-600 hover:bg-green-700"
-            aria-label="Colar cor da área de transferência"
+            aria-label={t("colorPicker.pasteColor")}
           >
             <Clipboard className="w-5 h-5" />
           </Button>
         </div>
 
-        <aside className="bg-muted p-3 rounded mb-4 text-sm text-muted-foreground" role="note" aria-label="Dica de uso">
+        <aside className="bg-muted p-3 rounded mb-4 text-sm text-muted-foreground" role="note" aria-label={t("aria.usageTip")}>
           <div className="flex items-start gap-2">
             <Lightbulb className="w-4 h-4 mt-0.5 flex-shrink-0" aria-hidden="true" />
             <div>
-              <strong>Dica:</strong> Pressione <kbd className="px-2 py-1 bg-background border border-border rounded text-xs">Ctrl+V</kbd> ou{" "}
-              <kbd className="px-2 py-1 bg-background border border-border rounded text-xs">⌘+V</kbd> para colar cores copiadas (HEX, RGB, HSL)
+              <strong>{t("colorPicker.tip")}:</strong>{" "}
+              <span dangerouslySetInnerHTML={{
+                __html: t("colorPicker.tipText")
+                  .replace(/<kbd>/g, '<kbd class="px-2 py-1 bg-background border border-border rounded text-xs">')
+                  .replace(/<\/kbd>/g, '</kbd>')
+              }} />
             </div>
           </div>
         </aside>
@@ -134,25 +140,25 @@ export function ColorPicker() {
 
         <div className="mt-4 flex gap-3">
           <div className="flex-1">
-            <Label htmlFor="color-name-input" className="block text-sm font-medium mb-2">Nome da Variável</Label>
+            <Label htmlFor="color-name-input" className="block text-sm font-medium mb-2">{t("colorPicker.variableName")}</Label>
             <Input
               id="color-name-input"
               type="text"
               value={colorName}
               onChange={(e) => updateColorName(e.target.value)}
-              placeholder="primary"
+              placeholder={t("colorPicker.variableNamePlaceholder")}
               className="w-full"
-              aria-label="Nome da variável de cor"
+              aria-label={t("colorPicker.variableName")}
             />
           </div>
           <div className="flex items-end">
             <Button
               onClick={savePalette}
               className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700"
-              aria-label="Salvar paleta de cores"
+              aria-label={t("colorPicker.savePalette")}
             >
               <Save className="w-4 h-4" aria-hidden="true" />
-              Salvar Paleta
+              {t("colorPicker.savePalette")}
             </Button>
           </div>
         </div>

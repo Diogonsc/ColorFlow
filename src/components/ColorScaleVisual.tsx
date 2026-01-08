@@ -1,7 +1,9 @@
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useColorFlowContext } from "@/contexts/ColorFlowContext";
 
 export function ColorScaleVisual() {
+  const { t } = useTranslation();
   const { colorScale, selectColor, selectedColor } = useColorFlowContext();
   const scales = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
@@ -12,10 +14,10 @@ export function ColorScaleVisual() {
   return (
     <Card className="bg-card border-border">
       <CardHeader className="pb-4">
-        <CardTitle className="text-lg font-semibold">Escala de Cores</CardTitle>
+        <CardTitle className="text-lg font-semibold">{t("colorScale.title")}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-11 gap-1 mb-4" role="group" aria-label="Escala de cores visual">
+        <div className="grid grid-cols-11 gap-1 mb-4" role="group" aria-label={t("colorScale.visualAriaLabel")}>
           {scales.map((scale) => {
             const color = colorScale[scale];
             if (!color) return null;
@@ -30,8 +32,12 @@ export function ColorScaleVisual() {
                   style={{ backgroundColor: color.hex }}
                   data-scale={scale}
                   onClick={() => handleColorClick(color.hex)}
-                  title={`Clique para selecionar ${color.hex}`}
-                  aria-label={`Cor ${scale}: ${color.hex}${isSelected ? ', selecionada' : ''}`}
+                  title={t("colorScale.selectColor", { hex: color.hex })}
+                  aria-label={t("colorScale.colorLabel", { 
+                    scale, 
+                    hex: color.hex, 
+                    selected: isSelected ? t("colorScale.selected") : "" 
+                  })}
                   aria-pressed={isSelected}
                 />
                 <div
@@ -56,7 +62,7 @@ export function ColorScaleVisual() {
             );
           })}
         </div>
-        <div className="grid grid-cols-11 gap-1 text-xs text-center" role="list" aria-label="Valores da escala">
+        <div className="grid grid-cols-11 gap-1 text-xs text-center" role="list" aria-label={t("colorScale.scaleValues")}>
           {scales.map((scale) => (
             <div key={scale} className="text-muted-foreground font-mono" role="listitem">
               {scale}

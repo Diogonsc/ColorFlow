@@ -1,9 +1,11 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { useColorFlowContext } from "@/contexts/ColorFlowContext";
 
 export function HSLSliders() {
+  const { t } = useTranslation();
   const { hsl, updateHSL } = useColorFlowContext();
 
   const handleHSLChange = (type: "h" | "s" | "l", value: number[]) => {
@@ -50,11 +52,11 @@ export function HSLSliders() {
   }, [hsl.h, hsl.s, hsl.l, hueGradient, satGradient, lightGradient]);
 
   return (
-    <fieldset className="space-y-3" aria-label="Controles HSL (Matiz, Saturação, Luminosidade)">
-      <legend className="sr-only">Ajustes HSL</legend>
+    <fieldset className="space-y-3" aria-label={t("hsl.controls")}>
+      <legend className="sr-only">{t("hsl.adjustments")}</legend>
       <div>
         <div className="flex justify-between mb-1">
-          <Label htmlFor="hue-slider" className="text-sm">H (Matiz)</Label>
+          <Label htmlFor="hue-slider" className="text-sm">{t("hsl.hue")}</Label>
           <span className="text-sm text-muted-foreground" aria-live="polite" aria-atomic="true">
             {Math.round(hsl.h)}°
           </span>
@@ -68,14 +70,14 @@ export function HSLSliders() {
             onValueChange={(value) => handleHSLChange("h", value)}
             step={1}
             className="w-full [&_[data-slot=slider-range]]:bg-transparent"
-            aria-label="Matiz da cor"
+            aria-label={t("hsl.hueLabel")}
           />
         </div>
       </div>
 
       <div>
         <div className="flex justify-between mb-1">
-          <Label htmlFor="saturation-slider" className="text-sm">S (Saturação)</Label>
+          <Label htmlFor="saturation-slider" className="text-sm">{t("hsl.saturation")}</Label>
           <span className="text-sm text-muted-foreground" aria-live="polite" aria-atomic="true">
             {Math.round(hsl.s)}%
           </span>
@@ -89,14 +91,14 @@ export function HSLSliders() {
             onValueChange={(value) => handleHSLChange("s", value)}
             step={1}
             className="w-full [&_[data-slot=slider-range]]:bg-transparent"
-            aria-label="Saturação da cor"
+            aria-label={t("hsl.saturationLabel")}
           />
         </div>
       </div>
 
       <div>
         <div className="flex justify-between mb-1">
-          <Label htmlFor="lightness-slider" className="text-sm">L (Luminosidade)</Label>
+          <Label htmlFor="lightness-slider" className="text-sm">{t("hsl.lightness")}</Label>
           <span className="text-sm text-muted-foreground" aria-live="polite" aria-atomic="true">
             {Math.round(hsl.l)}%
           </span>
@@ -110,7 +112,7 @@ export function HSLSliders() {
             onValueChange={(value) => handleHSLChange("l", value)}
             step={1}
             className="w-full [&_[data-slot=slider-range]]:bg-transparent"
-            aria-label="Luminosidade da cor"
+            aria-label={t("hsl.lightnessLabel")}
           />
         </div>
       </div>

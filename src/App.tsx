@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Folder } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { ColorFlowProvider, useColorFlowContext } from "@/contexts/ColorFlowContext";
 import { ColorPicker } from "@/components/ColorPicker";
@@ -7,12 +8,14 @@ import { ColorScaleVisual } from "@/components/ColorScaleVisual";
 import { ColorScaleDetails } from "@/components/ColorScaleDetails";
 import { ExportSection } from "@/components/ExportSection";
 import { SavedPalettes } from "@/components/SavedPalettes";
+import { LanguageSelector } from "@/components/LanguageSelector";
 import { AdSense } from "@/components/AdSense";
 import { ADSENSE_CONFIG } from "@/config/adsense";
 // import { UIPreview } from "@/components/UIPreview";
 import logo from "@/assets/logo-eleven.png";
 
 function AppContent() {
+  const { t } = useTranslation();
   const {
     savedPalettes,
     favorites,
@@ -49,7 +52,7 @@ function AppContent() {
       <div className="flex gap-4 max-w-7xl mx-auto px-4 py-6 items-start">
         {/* Anúncio lateral esquerda - oculto em mobile */}
         {ADSENSE_CONFIG.enabled && (
-          <aside className="hidden lg:block w-48 xl:w-64 flex-shrink-0 sticky top-6 self-start" aria-label="Publicidade lateral esquerda">
+          <aside className="hidden lg:block w-48 xl:w-64 flex-shrink-0 sticky top-6 self-start" aria-label={t("aria.adLeft")}>
             <AdSense
               adSlot={ADSENSE_CONFIG.adSlots.sidebarLeft}
               format="vertical"
@@ -65,20 +68,23 @@ function AppContent() {
             <div className="flex items-center gap-3">
               <img src={logo} alt="ElevenTones" className="w-40 h-auto" />
             </div>
-            <Button
-              variant="secondary"
-              onClick={toggleShowPalettes}
-              className="flex items-center gap-2"
-              aria-label={`${showPalettes ? 'Ocultar' : 'Mostrar'} paletas salvas`}
-            >
-              <Folder className="w-4 h-4" />
-              <span>Paletas Salvas ({savedPalettes.length})</span>
-            </Button>
+            <div className="flex items-center gap-3">
+              <LanguageSelector />
+              <Button
+                variant="secondary"
+                onClick={toggleShowPalettes}
+                className="flex items-center gap-2"
+                aria-label={showPalettes ? t("app.palettes.hidePalettes") : t("app.palettes.showPalettes")}
+              >
+                <Folder className="w-4 h-4" />
+                <span>{t("app.palettes.savedCount", { count: savedPalettes.length })}</span>
+              </Button>
+            </div>
           </header>
 
           {/* Anúncio abaixo do header - apenas em mobile */}
           {ADSENSE_CONFIG.enabled && (
-            <aside className="mb-6 lg:hidden" aria-label="Publicidade">
+            <aside className="mb-6 lg:hidden" aria-label={t("aria.ad")}>
               <AdSense
                 adSlot={ADSENSE_CONFIG.adSlots.mobileHeader}
                 format="horizontal"
@@ -88,7 +94,7 @@ function AppContent() {
           )}
 
           {showPalettes && (
-            <section className="mb-6" aria-label="Paletas salvas">
+            <section className="mb-6" aria-label={t("aria.savedPalettes")}>
               <SavedPalettes
                 palettes={savedPalettes}
                 favorites={favorites}
@@ -100,28 +106,28 @@ function AppContent() {
           )}
 
           <div className="space-y-6">
-            <section aria-label="Seletor de cor">
+            <section aria-label={t("aria.colorSelector")}>
               <ColorPicker />
             </section>
 
-            <section aria-label="Visualização da escala de cores">
+            <section aria-label={t("aria.colorScale")}>
               <ColorScaleVisual />
             </section>
 
-            <section aria-label="Detalhes da escala de cores">
+            <section aria-label={t("aria.colorScaleDetails")}>
               <ColorScaleDetails />
             </section>
 
             {/* <UIPreview /> */}
 
-            <section aria-label="Exportação de cores">
+            <section aria-label={t("aria.export")}>
               <ExportSection />
             </section>
           </div>
 
           {/* Anúncio no final da página */}
           {ADSENSE_CONFIG.enabled && (
-            <aside className="mt-8" aria-label="Publicidade">
+            <aside className="mt-8" aria-label={t("aria.ad")}>
               <AdSense
                 adSlot={ADSENSE_CONFIG.adSlots.pageFooter}
                 format="horizontal"
@@ -133,7 +139,7 @@ function AppContent() {
 
         {/* Anúncio lateral direita - oculto em mobile */}
         {ADSENSE_CONFIG.enabled && (
-          <aside className="hidden lg:block w-48 xl:w-64 flex-shrink-0 sticky top-6 self-start" aria-label="Publicidade lateral direita">
+          <aside className="hidden lg:block w-48 xl:w-64 flex-shrink-0 sticky top-6 self-start" aria-label={t("aria.adRight")}>
             <div className="flex justify-end">
               <AdSense
                 adSlot={ADSENSE_CONFIG.adSlots.sidebarRight}

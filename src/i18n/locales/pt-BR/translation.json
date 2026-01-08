@@ -1,0 +1,102 @@
+{
+  "app": {
+    "title": "ColorFlow",
+    "palettes": {
+      "saved": "Paletas",
+      "savedCount": "Paletas ({{count}})",
+      "show": "Mostrar",
+      "hide": "Ocultar",
+      "showPalettes": "Mostrar paletas salvas",
+      "hidePalettes": "Ocultar paletas salvas",
+      "none": "Nenhuma paleta salva ainda",
+      "delete": "Excluir Paleta",
+      "deleteConfirm": "Tem certeza que deseja excluir a paleta <strong>{{name}}</strong>? Esta ação não pode ser desfeita.",
+      "cancel": "Cancelar",
+      "deleteAction": "Excluir",
+      "apply": "Aplicar",
+      "favorite": "Adicionar aos favoritos",
+      "unfavorite": "Remover dos favoritos"
+    }
+  },
+  "colorPicker": {
+    "baseColor": "Cor Base",
+    "colorSelector": "Seletor de cor",
+    "hexInput": "Código hexadecimal da cor",
+    "hexPlaceholder": "#1E80F1",
+    "randomColor": "Gerar cor aleatória",
+    "eyeDropper": "Capturar cor da tela usando conta-gotas",
+    "pasteColor": "Colar cor da área de transferência",
+    "pasteColorShortcut": "Colar cor (Ctrl/Cmd + V)",
+    "tip": "Dica",
+    "tipText": "Pressione <kbd>Ctrl+V</kbd> ou <kbd>⌘+V</kbd> para colar cores copiadas (HEX, RGB, HSL)",
+    "variableName": "Nome da Variável",
+    "variableNamePlaceholder": "primary",
+    "savePalette": "Salvar Paleta"
+  },
+  "colorScale": {
+    "title": "Escala de Cores",
+    "details": "Detalhes da Escala",
+    "visualization": "Visualização da escala de cores",
+    "visualAriaLabel": "Escala de cores visual",
+    "selectColor": "Clique para selecionar {{hex}}",
+    "copyHex": "Copiar código hexadecimal {{hex}}",
+    "colorLabel": "Cor {{scale}}: {{hex}}{{selected}}",
+    "selected": ", selecionada",
+    "scaleValues": "Valores da escala"
+  },
+  "hsl": {
+    "controls": "Controles HSL (Matiz, Saturação, Luminosidade)",
+    "adjustments": "Ajustes HSL",
+    "hue": "H (Matiz)",
+    "saturation": "S (Saturação)",
+    "lightness": "L (Luminosidade)",
+    "hueLabel": "Matiz da cor",
+    "saturationLabel": "Saturação da cor",
+    "lightnessLabel": "Luminosidade da cor"
+  },
+  "export": {
+    "title": "Exportar",
+    "cssVariables": "CSS Variables",
+    "tailwind": "Tailwind",
+    "json": "JSON",
+    "figma": "Figma",
+    "exportAsCSS": "Exportar como variáveis CSS",
+    "exportAsTailwind": "Exportar como configuração Tailwind",
+    "exportAsJSON": "Exportar como JSON",
+    "exportAsFigma": "Exportar como script do Figma",
+    "modal": {
+      "close": "Fechar modal de exportação",
+      "clickToSelect": "Clique no código para selecionar e copiar, ou use o botão abaixo",
+      "copy": "Copiar",
+      "copied": "Copiado!",
+      "exportedContent": "Conteúdo exportado, clique para selecionar e copiar"
+    }
+  },
+  "messages": {
+    "copied": "Copiado para área de transferência!",
+    "copyError": "Erro ao copiar. Use Ctrl+C para copiar manualmente.",
+    "noColorScale": "Nenhuma escala de cores disponível",
+    "figmaCreated": "{{count}} estilos de cor criados!"
+  },
+  "aria": {
+    "adLeft": "Publicidade lateral esquerda",
+    "adRight": "Publicidade lateral direita",
+    "ad": "Publicidade",
+    "savedPalettes": "Paletas salvas",
+    "colorSelector": "Seletor de cor",
+    "colorScale": "Visualização da escala de cores",
+    "colorScaleDetails": "Detalhes da escala de cores",
+    "export": "Exportação de cores",
+    "colorControls": "Controles de seleção de cor",
+    "usageTip": "Dica de uso",
+    "paletteList": "Lista de paletas salvas",
+    "paletteActions": "Ações para paleta {{name}}",
+    "paletteColors": "Escala de cores da paleta {{name}}",
+    "exportOptions": "Opções de exportação"
+  },
+  "language": {
+    "select": "Selecionar idioma",
+    "ptBR": "Português (Brasil)",
+    "enUS": "English (US)"
+  }
+}

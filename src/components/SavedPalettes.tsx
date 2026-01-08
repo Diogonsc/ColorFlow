@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -29,6 +30,7 @@ export function SavedPalettes({
   onDeletePalette,
   onToggleFavorite,
 }: SavedPalettesProps) {
+  const { t, i18n } = useTranslation();
   const [paletteToDelete, setPaletteToDelete] = useState<SavedPalette | null>(null);
 
   const sortedPalettes = [...palettes].sort((a, b) => {
@@ -63,12 +65,12 @@ export function SavedPalettes({
   }
 
   return (
-    <Card className="bg-card border-border">
-      <CardHeader className="pb-4">
-        <CardTitle className="text-lg font-semibold">Paletas Salvas</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ul className="space-y-3 max-h-64 overflow-y-auto" role="list" aria-label="Lista de paletas salvas">
+      <Card className="bg-card border-border">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-lg font-semibold">{t("app.palettes.saved")}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="space-y-3 max-h-64 overflow-y-auto" role="list" aria-label={t("aria.paletteList")}>
           {sortedPalettes.map((palette) => {
             const isFavorite = favorites.includes(palette.id);
             return (
@@ -90,18 +92,18 @@ export function SavedPalettes({
                           {palette.name}
                         </h4>
                         <time className="text-xs text-muted-foreground" dateTime={palette.createdAt}>
-                          {new Date(palette.createdAt).toLocaleDateString("pt-BR")}
+                          {new Date(palette.createdAt).toLocaleDateString(i18n.language)}
                         </time>
                       </div>
                     </div>
-                    <div className="flex gap-2 items-center" role="group" aria-label={`Ações para paleta ${palette.name}`}>
+                    <div className="flex gap-2 items-center" role="group" aria-label={t("aria.paletteActions", { name: palette.name })}>
                       <Button
                         variant="ghost"
                         size="icon-sm"
                         onClick={() => onToggleFavorite(palette.id)}
                         className={isFavorite ? "text-yellow-400" : "text-muted-foreground hover:text-yellow-400"}
-                        title={isFavorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}
-                        aria-label={isFavorite ? `Remover ${palette.name} dos favoritos` : `Adicionar ${palette.name} aos favoritos`}
+                        title={isFavorite ? t("app.palettes.unfavorite") : t("app.palettes.favorite")}
+                        aria-label={isFavorite ? t("app.palettes.unfavorite") : t("app.palettes.favorite")}
                         aria-pressed={isFavorite}
                       >
                         <Star
@@ -114,8 +116,8 @@ export function SavedPalettes({
                         size="icon-sm"
                         onClick={() => onLoadPalette(palette)}
                         className="text-blue-400 hover:text-blue-300"
-                        title="Aplicar"
-                        aria-label={`Aplicar paleta ${palette.name}`}
+                        title={t("app.palettes.apply")}
+                        aria-label={t("app.palettes.apply")}
                       >
                         <ArrowRightCircle className="w-4 h-4" aria-hidden="true" />
                       </Button>
@@ -124,14 +126,14 @@ export function SavedPalettes({
                         size="icon-sm"
                         onClick={() => handleDeleteClick(palette)}
                         className="text-red-400 hover:text-red-300"
-                        title="Excluir"
-                        aria-label={`Excluir paleta ${palette.name}`}
+                        title={t("app.palettes.deleteAction")}
+                        aria-label={t("app.palettes.deleteAction")}
                       >
                         <Trash2 className="w-4 h-4" aria-hidden="true" />
                       </Button>
                     </div>
                   </div>
-                  <div className="flex gap-1" role="img" aria-label={`Escala de cores da paleta ${palette.name}`}>
+                  <div className="flex gap-1" role="img" aria-label={t("aria.paletteColors", { name: palette.name })}>
                     {Object.values(palette.colorScale).map((color, index) => (
                       <div
                         key={index}
@@ -151,19 +153,20 @@ export function SavedPalettes({
       <AlertDialog open={!!paletteToDelete} onOpenChange={(open) => !open && setPaletteToDelete(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Excluir Paleta</AlertDialogTitle>
+            <AlertDialogTitle>{t("app.palettes.delete")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Tem certeza que deseja excluir a paleta <strong>{paletteToDelete?.name}</strong>? 
-              Esta ação não pode ser desfeita.
+              <span dangerouslySetInnerHTML={{
+                __html: t("app.palettes.deleteConfirm", { name: paletteToDelete?.name || "" })
+              }} />
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel>{t("app.palettes.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmDelete}
               className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
             >
-              Excluir
+              {t("app.palettes.deleteAction")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
