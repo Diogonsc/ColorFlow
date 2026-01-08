@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import { Upload, Copy, X, Check } from "lucide-react";
 import { useColorFlowContext } from "@/contexts/ColorFlowContext";
 import { hexToRgb } from "@/lib/colorUtils";
@@ -211,7 +212,7 @@ export function ExportSection() {
       {/* Modal de Exportação */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-          <Card className="bg-card border-border w-full max-w-2xl max-h-[80vh] flex flex-col">
+          <Card className="bg-card border-border w-full max-w-2xl min-h-[80vh] flex flex-col">
             <CardHeader className="flex items-center justify-between pb-4">
               <CardTitle className="text-lg font-semibold">{exportTitle}</CardTitle>
               <div className="flex items-center gap-2">
@@ -231,11 +232,11 @@ export function ExportSection() {
               </div>
             </CardHeader>
             <CardContent className="flex-1 overflow-hidden flex flex-col">
-              <div className="relative flex-1 bg-muted rounded border border-border overflow-hidden">
-                <textarea
+              <div className="relative flex-1 overflow-hidden">
+                <Textarea
                   readOnly
                   value={exportContent}
-                  className="w-full h-full p-4 bg-transparent text-sm font-mono resize-none outline-none"
+                  className="w-full h-full min-h-[600px] font-mono resize-none bg-muted"
                   onClick={(e) => {
                     (e.target as HTMLTextAreaElement).select();
                     copyToClipboard(exportContent);
