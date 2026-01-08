@@ -15,25 +15,29 @@ export function ColorScaleVisual() {
         <CardTitle className="text-lg font-semibold">Escala de Cores</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-11 gap-1 mb-4">
+        <div className="grid grid-cols-11 gap-1 mb-4" role="group" aria-label="Escala de cores visual">
           {scales.map((scale) => {
             const color = colorScale[scale];
             if (!color) return null;
             const isSelected = selectedColor === color.hex;
             return (
               <div key={scale} className="group relative">
-                <div
-                  className={`h-20 rounded cursor-pointer transition-all hover:scale-105 ${
+                <button
+                  type="button"
+                  className={`h-20 w-full rounded cursor-pointer transition-all hover:scale-105 ${
                     isSelected ? "ring-4 ring-blue-500 ring-offset-2" : ""
                   }`}
                   style={{ backgroundColor: color.hex }}
                   data-scale={scale}
                   onClick={() => handleColorClick(color.hex)}
                   title={`Clique para selecionar ${color.hex}`}
+                  aria-label={`Cor ${scale}: ${color.hex}${isSelected ? ', selecionada' : ''}`}
+                  aria-pressed={isSelected}
                 />
                 <div
-                  className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded"
+                  className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded pointer-events-none"
                   style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+                  aria-hidden="true"
                 >
                   <span
                     className="text-xs font-bold"
@@ -52,9 +56,9 @@ export function ColorScaleVisual() {
             );
           })}
         </div>
-        <div className="grid grid-cols-11 gap-1 text-xs text-center">
+        <div className="grid grid-cols-11 gap-1 text-xs text-center" role="list" aria-label="Valores da escala">
           {scales.map((scale) => (
-            <div key={scale} className="text-muted-foreground font-mono">
+            <div key={scale} className="text-muted-foreground font-mono" role="listitem">
               {scale}
             </div>
           ))}

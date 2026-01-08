@@ -127,7 +127,7 @@ export function UIPreview() {
   }, [selectedColor]);
 
   return (
-    <div {...styleProps}>
+    <section {...styleProps} aria-label="Preview dos componentes de interface">
       <Card className="bg-card border-border">
       <CardHeader>
         <CardTitle className="text-lg font-semibold">
@@ -142,6 +142,7 @@ export function UIPreview() {
             id="preview-input"
             placeholder="Digite algo..."
             defaultValue="Exemplo de input"
+            aria-label="Campo de entrada de texto de exemplo"
           />
         </div>
 
@@ -152,6 +153,7 @@ export function UIPreview() {
             id="preview-textarea"
             placeholder="Digite sua mensagem..."
             defaultValue="Exemplo de textarea"
+            aria-label="Área de texto de exemplo"
           />
         </div>
 
@@ -159,7 +161,7 @@ export function UIPreview() {
         <div className="space-y-2">
           <Label htmlFor="preview-select">Select</Label>
           <Select value={selectValue} onValueChange={setSelectValue}>
-            <SelectTrigger id="preview-select">
+            <SelectTrigger id="preview-select" aria-label="Seletor de opções de exemplo">
               <SelectValue placeholder="Selecione uma opção" />
             </SelectTrigger>
             <SelectContent className="ui-preview-select-content">
@@ -178,6 +180,7 @@ export function UIPreview() {
             onCheckedChange={(checked) =>
               setCheckboxChecked(checked === true)
             }
+            aria-label="Checkbox de exemplo"
           />
           <Label
             htmlFor="preview-checkbox"
@@ -193,6 +196,7 @@ export function UIPreview() {
             id="preview-switch"
             checked={switchChecked}
             onCheckedChange={setSwitchChecked}
+            aria-label="Switch de exemplo"
           />
           <Label htmlFor="preview-switch" className="cursor-pointer font-normal">
             Switch
@@ -207,7 +211,7 @@ export function UIPreview() {
             onPressedChange={setTogglePressed}
             aria-label="Toggle bold"
           >
-            <Bold className="h-4 w-4" />
+            <Bold className="h-4 w-4" aria-hidden="true" />
           </Toggle>
           <Label htmlFor="preview-toggle" className="cursor-pointer font-normal">
             Toggle
@@ -215,18 +219,18 @@ export function UIPreview() {
         </div>
 
         {/* Buttons */}
-        <div className="flex flex-wrap gap-3">
-          <Button>Button Default</Button>
-          <Button variant="secondary">Button Secondary</Button>
-          <Button variant="outline">Button Outline</Button>
-          <Button variant="ghost">Button Ghost</Button>
-          <Button variant="destructive">Button Destructive</Button>
+        <div className="flex flex-wrap gap-3" role="group" aria-label="Botões de exemplo">
+          <Button aria-label="Botão padrão de exemplo">Button Default</Button>
+          <Button variant="secondary" aria-label="Botão secundário de exemplo">Button Secondary</Button>
+          <Button variant="outline" aria-label="Botão outline de exemplo">Button Outline</Button>
+          <Button variant="ghost" aria-label="Botão ghost de exemplo">Button Ghost</Button>
+          <Button variant="destructive" aria-label="Botão destrutivo de exemplo">Button Destructive</Button>
         </div>
 
         {/* Badge */}
         <div className="space-y-2">
           <Label>Badge</Label>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2" role="group" aria-label="Badges de exemplo">
             <Badge>Default</Badge>
             <Badge variant="secondary">Secondary</Badge>
             <Badge variant="destructive">Destructive</Badge>
@@ -241,6 +245,7 @@ export function UIPreview() {
             date={selectedDate}
             onDateChange={setSelectedDate}
             placeholder="Selecione uma data"
+            aria-label="Seletor de data de exemplo"
           />
         </div>
 
@@ -253,49 +258,51 @@ export function UIPreview() {
               selected={calendarDate}
               onSelect={setCalendarDate}
               className="rounded-md border"
+              aria-label="Calendário de exemplo"
             />
           </div>
         </div>
 
         {/* Pagination */}
-        <div className="space-y-2">
+        <nav className="space-y-2" aria-label="Paginação de exemplo">
           <Label>Pagination</Label>
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <PaginationPrevious href="#" />
+                <PaginationPrevious href="#" aria-label="Página anterior" />
               </PaginationItem>
               <PaginationItem>
-                <PaginationLink href="#" isActive>1</PaginationLink>
+                <PaginationLink href="#" isActive aria-label="Página 1, página atual">1</PaginationLink>
               </PaginationItem>
               <PaginationItem>
-                <PaginationLink href="#">2</PaginationLink>
+                <PaginationLink href="#" aria-label="Página 2">2</PaginationLink>
               </PaginationItem>
               <PaginationItem>
-                <PaginationLink href="#">3</PaginationLink>
+                <PaginationLink href="#" aria-label="Página 3">3</PaginationLink>
               </PaginationItem>
               <PaginationItem>
-                <PaginationEllipsis />
+                <PaginationEllipsis aria-label="Mais páginas" />
               </PaginationItem>
               <PaginationItem>
-                <PaginationNext href="#" />
+                <PaginationNext href="#" aria-label="Próxima página" />
               </PaginationItem>
             </PaginationContent>
           </Pagination>
-        </div>
+        </nav>
 
         {selectedColor && (
-          <div className="mt-4 p-3 bg-muted rounded text-sm">
+          <aside className="mt-4 p-3 bg-muted rounded text-sm" role="status" aria-label="Cor selecionada">
             <strong>Cor selecionada:</strong>{" "}
             <span className="font-mono">{selectedColor}</span>
             <div
               className="mt-2 h-8 rounded border-2 border-border"
               style={{ backgroundColor: selectedColor }}
+              aria-label={`Amostra da cor ${selectedColor}`}
             />
-          </div>
+          </aside>
         )}
       </CardContent>
     </Card>
-    </div>
+    </section>
   );
 }

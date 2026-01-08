@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Copy, Check } from "lucide-react";
 import { useColorFlowContext } from "@/contexts/ColorFlowContext";
 import { useState } from "react";
+import { trackEvent } from "@/lib/gtag";
 
 export function ColorScaleDetails() {
   const { colorScale, colorName, selectColor, selectedColor } = useColorFlowContext();
@@ -14,6 +15,9 @@ export function ColorScaleDetails() {
       await navigator.clipboard.writeText(hex);
       setCopiedScale(scale);
       setTimeout(() => setCopiedScale(null), 2000);
+      
+      // Rastreia a cópia da cor
+      trackEvent('copy_color', 'engagement', `${colorName}-${scale}`, undefined);
     } catch (err) {
       console.error("Erro ao copiar:", err);
     }
@@ -29,26 +33,28 @@ export function ColorScaleDetails() {
         <CardTitle className="text-lg font-semibold">Detalhes da Escala</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-3">
+        <ul className="flex flex-col gap-3" role="list" aria-label="Lista de cores da escala">
           {scales.map((scale) => {
             const color = colorScale[scale];
             if (!color) return null;
             const isCopied = copiedScale === scale;
             const isSelected = selectedColor === color.hex;
             return (
-              <div
+              <li
                 key={scale}
                 className={`bg-muted p-3 rounded flex items-center gap-3 cursor-pointer transition-all hover:bg-muted/80 ${
                   isSelected ? "ring-2 ring-blue-500" : ""
                 }`}
                 onClick={() => handleColorClick(color.hex)}
                 title={`Clique para selecionar ${color.hex}`}
+                role="listitem"
               >
                 <div
                   className={`w-12 h-12 rounded border-2 flex-shrink-0 ${
                     isSelected ? "border-blue-500" : "border-border"
                   }`}
                   style={{ backgroundColor: color.hex }}
+                  aria-label={`Amostra da cor ${colorName}-${scale}`}
                 />
                 <div className="flex-1 min-w-0">
                   <div className="font-semibold text-foreground">
@@ -67,17 +73,18 @@ export function ColorScaleDetails() {
                   }}
                   title={`Copiar ${color.hex}`}
                   className="flex-shrink-0"
+                  aria-label={`Copiar código hexadecimal ${color.hex}`}
                 >
                   {isCopied ? (
-                    <Check className="w-4 h-4 text-green-400" />
+                    <Check className="w-4 h-4 text-green-400" aria-hidden="true" />
                   ) : (
-                    <Copy className="w-4 h-4" />
+                    <Copy className="w-4 h-4" aria-hidden="true" />
                   )}
                 </Button>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </CardContent>
     </Card>
   );
