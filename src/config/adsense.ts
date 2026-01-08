@@ -30,5 +30,5 @@ export const ADSENSE_CONFIG = {
   },
   
   // Habilitar anúncios (desative durante desenvolvimento)
-  enabled: process.env.NODE_ENV === 'production',
+  enabled: import.meta.env.PROD,
 } as const;
