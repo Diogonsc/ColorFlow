@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Palette, Folder } from "lucide-react";
+import { Folder } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ColorFlowProvider, useColorFlowContext } from "@/contexts/ColorFlowContext";
 import { ColorPicker } from "@/components/ColorPicker";
@@ -8,6 +8,7 @@ import { ColorScaleDetails } from "@/components/ColorScaleDetails";
 import { ExportSection } from "@/components/ExportSection";
 import { SavedPalettes } from "@/components/SavedPalettes";
 // import { UIPreview } from "@/components/UIPreview";
+import logo from "@/assets/logo-eleven.png";
 
 function AppContent() {
   const {
@@ -45,10 +46,7 @@ function AppContent() {
       <div className="w-full max-w-3xl mx-auto p-6">
         <div className="flex items-center justify-between mb-6 pb-4 border-b border-border">
           <div className="flex items-center gap-3">
-            <div className="text-blue-400">
-              <Palette className="w-7 h-7" />
-            </div>
-            <h1 className="text-2xl font-bold">ColorFlow</h1>
+            <img src={logo} alt="ElevenTones" className="w-40 h-auto" />
           </div>
           <Button
             variant="secondary"
