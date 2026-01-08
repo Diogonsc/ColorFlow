@@ -6,8 +6,8 @@
  */
 
 export const ADSENSE_CONFIG = {
-  // Substitua pelo seu Publisher ID do Google AdSense
-  publisherId: 'ca-pub-XXXXXXXXXXXXXXXX',
+  // Publisher ID do Google AdSense
+  publisherId: 'ca-pub-6634796899207409',
   
   // Formato padrão dos anúncios
   defaultFormat: 'auto' as const,
