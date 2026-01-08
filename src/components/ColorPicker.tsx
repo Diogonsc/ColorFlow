@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -27,12 +28,25 @@ export function ColorPicker() {
     message,
   } = useColorFlowContext();
   const { isSupported: eyeDropperSupported, pickColor } = useEyeDropper();
+  const [hexInputValue, setHexInputValue] = useState(baseColor);
+
+  // Sincroniza o input quando baseColor muda externamente
+  useEffect(() => {
+    setHexInputValue(baseColor);
+  }, [baseColor]);
 
   const handleHexChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
+    // Permite digitar livremente
+    setHexInputValue(value);
+    
+    // Remove espaços e valida
+    const trimmedValue = value.trim();
     const hexRegex = /^#?[0-9A-Fa-f]{6}$|^#?[0-9A-Fa-f]{3}$/;
-    if (hexRegex.test(value)) {
-      updateBaseColor(value.startsWith("#") ? value : `#${value}`);
+    
+    // Se for válido, atualiza a cor base
+    if (hexRegex.test(trimmedValue)) {
+      updateBaseColor(trimmedValue.startsWith("#") ? trimmedValue : `#${trimmedValue}`);
     }
   };
 
@@ -83,7 +97,7 @@ export function ColorPicker() {
           <Input
             id="hex-input"
             type="text"
-            value={baseColor}
+            value={hexInputValue}
             onChange={handleHexChange}
             className="flex-1 font-mono text-lg"
             placeholder={t("colorPicker.hexPlaceholder")}
