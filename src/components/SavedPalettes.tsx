@@ -11,7 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Folder, Star, Trash2 } from "lucide-react";
+import { ArrowRightCircle, Star, Trash2 } from "lucide-react";
 import type { SavedPalette } from "@/hooks/useColorFlow";
 
 interface SavedPalettesProps {
@@ -114,10 +114,10 @@ export function SavedPalettes({
                         size="icon-sm"
                         onClick={() => onLoadPalette(palette)}
                         className="text-blue-400 hover:text-blue-300"
-                        title="Carregar"
-                        aria-label={`Carregar paleta ${palette.name}`}
+                        title="Aplicar"
+                        aria-label={`Aplicar paleta ${palette.name}`}
                       >
-                        <Folder className="w-4 h-4" aria-hidden="true" />
+                        <ArrowRightCircle className="w-4 h-4" aria-hidden="true" />
                       </Button>
                       <Button
                         variant="ghost"
