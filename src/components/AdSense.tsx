@@ -60,7 +60,7 @@ export function AdSense({
   style,
 }: AdSenseProps) {
   const adRef = useRef<HTMLDivElement>(null);
-  const insRef = useRef<HTMLElement>(null);
+  const insRef = useRef<HTMLModElement>(null);
   const adInitialized = useRef(false);
   const [adLoaded, setAdLoaded] = useState(false);
   const [shouldHide, setShouldHide] = useState(false);
