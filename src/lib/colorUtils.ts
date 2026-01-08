@@ -26,6 +26,8 @@ export interface ColorScaleItem {
 
 export type ColorScale = Record<number, ColorScaleItem>;
 
+export type ColorHarmony = "monochromatic" | "complementary" | "analogous" | "triadic" | "tetradic";
+
 // Funções de conversão de cores
 export function hexToRgb(hex: string): RGB | null {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -131,34 +133,228 @@ export function calculateContrast(rgb: RGB): {
   };
 }
 
-export function generateColorScale(h: number, s: number, l: number): ColorScale {
+// Função auxiliar para gerar uma escala monocromática a partir de um HSL base
+function generateMonochromaticScale(baseH: number, baseS: number, baseL: number): ColorScale {
   const scales = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
   const newColorScale: ColorScale = {};
 
   scales.forEach((scale) => {
     let lightness: number;
     if (scale <= 500) {
-      lightness = 95 - (scale / 500) * (95 - l);
+      lightness = 95 - (scale / 500) * (95 - baseL);
     } else {
-      lightness = l - ((scale - 500) / 450) * (l - 5);
+      lightness = baseL - ((scale - 500) / 450) * (baseL - 5);
     }
 
     const saturationCurve = scale === 500 ? 1 : scale < 500 ? 0.85 : 0.92;
-    const saturation = s * saturationCurve;
+    const saturation = baseS * saturationCurve;
 
-    const newRgb = hslToRgb(h, saturation, lightness);
+    const newRgb = hslToRgb(baseH, saturation, lightness);
     const hex = rgbToHex(newRgb.r, newRgb.g, newRgb.b);
     const contrast = calculateContrast(newRgb);
 
     newColorScale[scale] = {
       hex,
-      hsl: `hsl(${Math.round(h)}, ${Math.round(saturation)}%, ${Math.round(lightness)}%)`,
+      hsl: `hsl(${Math.round(baseH)}, ${Math.round(saturation)}%, ${Math.round(lightness)}%)`,
       rgb: `rgb(${newRgb.r}, ${newRgb.g}, ${newRgb.b})`,
       contrast,
     };
   });
 
   return newColorScale;
+}
+
+// Função principal para gerar escala baseada na harmonia escolhida
+export function generateColorScale(
+  h: number,
+  s: number,
+  l: number,
+  harmony: ColorHarmony = "monochromatic"
+): ColorScale {
+  const scales = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
+  const newColorScale: ColorScale = {};
+
+  switch (harmony) {
+    case "monochromatic":
+      return generateMonochromaticScale(h, s, l);
+
+    case "complementary": {
+      // Cor complementar (180 graus de diferença)
+      const complementaryH = (h + 180) % 360;
+      // Distribui as escalas entre as duas cores
+      scales.forEach((scale) => {
+        let targetH: number;
+        let lightness: number;
+        let saturation: number;
+
+        if (scale <= 500) {
+          // Escalas claras usam a cor base
+          targetH = h;
+          lightness = 95 - (scale / 500) * (95 - l);
+          const saturationCurve = scale === 500 ? 1 : scale < 500 ? 0.85 : 0.92;
+          saturation = s * saturationCurve;
+        } else {
+          // Escalas escuras usam a cor complementar
+          targetH = complementaryH;
+          lightness = l - ((scale - 500) / 450) * (l - 5);
+          saturation = s * 0.92;
+        }
+
+        const newRgb = hslToRgb(targetH, saturation, lightness);
+        const hex = rgbToHex(newRgb.r, newRgb.g, newRgb.b);
+        const contrast = calculateContrast(newRgb);
+
+        newColorScale[scale] = {
+          hex,
+          hsl: `hsl(${Math.round(targetH)}, ${Math.round(saturation)}%, ${Math.round(lightness)}%)`,
+          rgb: `rgb(${newRgb.r}, ${newRgb.g}, ${newRgb.b})`,
+          contrast,
+        };
+      });
+      return newColorScale;
+    }
+
+    case "analogous": {
+      // Cores análogas (30 graus de diferença)
+      const analogous1H = (h - 30 + 360) % 360;
+      const analogous2H = (h + 30) % 360;
+      
+      scales.forEach((scale) => {
+        let targetH: number;
+        let lightness: number;
+        let saturation: number;
+
+        if (scale <= 300) {
+          targetH = analogous1H;
+          lightness = 95 - (scale / 300) * (95 - l);
+          saturation = s * 0.85;
+        } else if (scale <= 700) {
+          targetH = h;
+          if (scale <= 500) {
+            lightness = 95 - ((scale - 300) / 200) * (95 - l);
+          } else {
+            lightness = l - ((scale - 500) / 200) * (l - 5);
+          }
+          const saturationCurve = scale === 500 ? 1 : scale < 500 ? 0.85 : 0.92;
+          saturation = s * saturationCurve;
+        } else {
+          targetH = analogous2H;
+          lightness = l - ((scale - 700) / 250) * (l - 5);
+          saturation = s * 0.92;
+        }
+
+        const newRgb = hslToRgb(targetH, saturation, lightness);
+        const hex = rgbToHex(newRgb.r, newRgb.g, newRgb.b);
+        const contrast = calculateContrast(newRgb);
+
+        newColorScale[scale] = {
+          hex,
+          hsl: `hsl(${Math.round(targetH)}, ${Math.round(saturation)}%, ${Math.round(lightness)}%)`,
+          rgb: `rgb(${newRgb.r}, ${newRgb.g}, ${newRgb.b})`,
+          contrast,
+        };
+      });
+      return newColorScale;
+    }
+
+    case "triadic": {
+      // Cores triádicas (120 graus de diferença)
+      const triadic1H = (h + 120) % 360;
+      const triadic2H = (h + 240) % 360;
+      
+      scales.forEach((scale) => {
+        let targetH: number;
+        let lightness: number;
+        let saturation: number;
+
+        if (scale <= 300) {
+          targetH = h;
+          lightness = 95 - (scale / 300) * (95 - l);
+          saturation = s * 0.85;
+        } else if (scale <= 700) {
+          targetH = triadic1H;
+          if (scale <= 500) {
+            lightness = 95 - ((scale - 300) / 200) * (95 - l);
+          } else {
+            lightness = l - ((scale - 500) / 200) * (l - 5);
+          }
+          const saturationCurve = scale === 500 ? 1 : scale < 500 ? 0.85 : 0.92;
+          saturation = s * saturationCurve;
+        } else {
+          targetH = triadic2H;
+          lightness = l - ((scale - 700) / 250) * (l - 5);
+          saturation = s * 0.92;
+        }
+
+        const newRgb = hslToRgb(targetH, saturation, lightness);
+        const hex = rgbToHex(newRgb.r, newRgb.g, newRgb.b);
+        const contrast = calculateContrast(newRgb);
+
+        newColorScale[scale] = {
+          hex,
+          hsl: `hsl(${Math.round(targetH)}, ${Math.round(saturation)}%, ${Math.round(lightness)}%)`,
+          rgb: `rgb(${newRgb.r}, ${newRgb.g}, ${newRgb.b})`,
+          contrast,
+        };
+      });
+      return newColorScale;
+    }
+
+    case "tetradic": {
+      // Cores tetrídicas (90 graus de diferença)
+      const tetradic1H = (h + 90) % 360;
+      const tetradic2H = (h + 180) % 360;
+      const tetradic3H = (h + 270) % 360;
+      
+      scales.forEach((scale) => {
+        let targetH: number;
+        let lightness: number;
+        let saturation: number;
+
+        if (scale <= 200) {
+          targetH = h;
+          lightness = 95 - (scale / 200) * (95 - l);
+          saturation = s * 0.85;
+        } else if (scale <= 400) {
+          targetH = tetradic1H;
+          lightness = 95 - ((scale - 200) / 200) * (95 - l);
+          saturation = s * 0.9;
+        } else if (scale <= 600) {
+          targetH = tetradic2H;
+          if (scale <= 500) {
+            lightness = 95 - ((scale - 400) / 100) * (95 - l);
+          } else {
+            lightness = l - ((scale - 500) / 100) * (l - 5);
+          }
+          const saturationCurve = scale === 500 ? 1 : 0.95;
+          saturation = s * saturationCurve;
+        } else if (scale <= 800) {
+          targetH = tetradic3H;
+          lightness = l - ((scale - 600) / 200) * (l - 5);
+          saturation = s * 0.92;
+        } else {
+          targetH = h;
+          lightness = l - ((scale - 800) / 150) * (l - 5);
+          saturation = s * 0.92;
+        }
+
+        const newRgb = hslToRgb(targetH, saturation, lightness);
+        const hex = rgbToHex(newRgb.r, newRgb.g, newRgb.b);
+        const contrast = calculateContrast(newRgb);
+
+        newColorScale[scale] = {
+          hex,
+          hsl: `hsl(${Math.round(targetH)}, ${Math.round(saturation)}%, ${Math.round(lightness)}%)`,
+          rgb: `rgb(${newRgb.r}, ${newRgb.g}, ${newRgb.b})`,
+          contrast,
+        };
+      });
+      return newColorScale;
+    }
+
+    default:
+      return generateMonochromaticScale(h, s, l);
+  }
 }
 
 export function parseColorString(text: string): string | null {

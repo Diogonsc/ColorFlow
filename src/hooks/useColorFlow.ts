@@ -6,8 +6,10 @@ import {
   hslToRgb,
   generateColorScale,
   parseColorString,
+  calculateContrast,
   type HSL,
   type ColorScale,
+  type ColorHarmony,
 } from "@/lib/colorUtils";
 
 export interface SavedPalette {
@@ -16,6 +18,7 @@ export interface SavedPalette {
   baseColor: string;
   hsl: HSL;
   colorScale: ColorScale;
+  harmony: ColorHarmony;
   createdAt: string;
 }
 
@@ -24,6 +27,7 @@ interface UseColorFlowReturn {
   colorName: string;
   hsl: HSL;
   colorScale: ColorScale;
+  harmony: ColorHarmony;
   selectedColor: string | null;
   savedPalettes: SavedPalette[];
   favorites: string[];
@@ -32,6 +36,8 @@ interface UseColorFlowReturn {
   updateBaseColor: (hex: string) => void;
   updateHSL: (type: keyof HSL, value: number) => void;
   updateColorName: (name: string) => void;
+  updateHarmony: (harmony: ColorHarmony) => void;
+  updateColorInScale: (scale: number, hex: string) => void;
   selectColor: (hex: string) => void;
   savePalette: () => void;
   loadPalette: (palette: SavedPalette) => void;
@@ -50,8 +56,9 @@ export function useColorFlow(): UseColorFlowReturn {
   const [baseColor, setBaseColor] = useState("#1E80F1");
   const [colorName, setColorName] = useState("primary");
   const [hsl, setHsl] = useState<HSL>({ h: 212, s: 88, l: 53 });
+  const [harmony, setHarmony] = useState<ColorHarmony>("monochromatic");
   const [colorScale, setColorScale] = useState<ColorScale>(() =>
-    generateColorScale(212, 88, 53)
+    generateColorScale(212, 88, 53, "monochromatic")
   );
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [savedPalettes, setSavedPalettes] = useState<SavedPalette[]>([]);
@@ -88,9 +95,9 @@ export function useColorFlow(): UseColorFlowReturn {
     if (rgb) {
       const newHsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
       setHsl(newHsl);
-      setColorScale(generateColorScale(newHsl.h, newHsl.s, newHsl.l));
+      setColorScale(generateColorScale(newHsl.h, newHsl.s, newHsl.l, harmony));
     }
-  }, []);
+  }, [harmony]);
 
   // Atualizar HSL e recalcular baseColor e escala
   const updateHSL = useCallback((type: keyof HSL, value: number) => {
@@ -99,8 +106,35 @@ export function useColorFlow(): UseColorFlowReturn {
       const rgb = hslToRgb(newHsl.h, newHsl.s, newHsl.l);
       const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
       setBaseColor(hex);
-      setColorScale(generateColorScale(newHsl.h, newHsl.s, newHsl.l));
+      setColorScale(generateColorScale(newHsl.h, newHsl.s, newHsl.l, harmony));
       return newHsl;
+    });
+  }, [harmony]);
+
+  // Atualizar harmonia e recalcular escala
+  const updateHarmony = useCallback((newHarmony: ColorHarmony) => {
+    setHarmony(newHarmony);
+    setColorScale(generateColorScale(hsl.h, hsl.s, hsl.l, newHarmony));
+  }, [hsl]);
+
+  // Atualizar cor individual na escala
+  const updateColorInScale = useCallback((scale: number, hex: string) => {
+    setColorScale((prev) => {
+      const rgb = hexToRgb(hex);
+      if (!rgb) return prev;
+      
+      const contrast = calculateContrast(rgb);
+      const hslValue = rgbToHsl(rgb.r, rgb.g, rgb.b);
+      
+      return {
+        ...prev,
+        [scale]: {
+          hex,
+          hsl: `hsl(${Math.round(hslValue.h)}, ${Math.round(hslValue.s)}%, ${Math.round(hslValue.l)}%)`,
+          rgb: `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`,
+          contrast,
+        },
+      };
     });
   }, []);
 
@@ -112,6 +146,7 @@ export function useColorFlow(): UseColorFlowReturn {
       baseColor,
       hsl,
       colorScale,
+      harmony,
       createdAt: new Date().toISOString(),
     };
 
@@ -119,13 +154,14 @@ export function useColorFlow(): UseColorFlowReturn {
     setSavedPalettes(newPalettes);
     localStorage.setItem(STORAGE_KEY_PALETTES, JSON.stringify(newPalettes));
     setMessage("Paleta salva!", "success");
-  }, [baseColor, colorName, hsl, colorScale, savedPalettes]);
+  }, [baseColor, colorName, hsl, colorScale, harmony, savedPalettes]);
 
   // Carregar paleta
   const loadPalette = useCallback((palette: SavedPalette) => {
     setBaseColor(palette.baseColor);
     setColorName(palette.name);
     setHsl(palette.hsl);
+    setHarmony(palette.harmony || "monochromatic");
     setColorScale(palette.colorScale);
     setShowPalettes(false);
   }, []);
@@ -199,6 +235,7 @@ export function useColorFlow(): UseColorFlowReturn {
     colorName,
     hsl,
     colorScale,
+    harmony,
     selectedColor,
     savedPalettes,
     favorites,
@@ -207,6 +244,8 @@ export function useColorFlow(): UseColorFlowReturn {
     updateBaseColor,
     updateHSL,
     updateColorName: setColorName,
+    updateHarmony,
+    updateColorInScale,
     selectColor,
     savePalette,
     loadPalette,

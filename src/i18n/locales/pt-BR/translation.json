@@ -31,7 +31,15 @@
     "tipText": "Pressione <kbd>Ctrl+V</kbd> ou <kbd>⌘+V</kbd> para colar cores copiadas (HEX, RGB, HSL)",
     "variableName": "Nome da Variável",
     "variableNamePlaceholder": "primary",
-    "savePalette": "Salvar Paleta"
+    "savePalette": "Salvar Paleta",
+    "colorHarmony": "Harmonia de Cores",
+    "harmony": {
+      "monochromatic": "Monocromática",
+      "complementary": "Complementar",
+      "analogous": "Análoga",
+      "triadic": "Triádica",
+      "tetradic": "Tetrídica"
+    }
   },
   "colorScale": {
     "title": "Escala de Cores",
@@ -40,9 +48,13 @@
     "visualAriaLabel": "Escala de cores visual",
     "selectColor": "Clique para selecionar {{hex}}",
     "copyHex": "Copiar código hexadecimal {{hex}}",
-    "colorLabel": "Cor {{scale}}: {{hex}}{{selected}}",
+    "colorLabel": "Cor {{scale}}: {{hex}}{{selected}}{{base}}",
     "selected": ", selecionada",
-    "scaleValues": "Valores da escala"
+    "base": ", cor base",
+    "scaleValues": "Valores da escala",
+    "baseColor": "Base",
+    "baseColorIndicator": "Esta é a cor base escolhida (escala 500)",
+    "editColor": "Editar cor {{scale}}"
   },
   "hsl": {
     "controls": "Controles HSL (Matiz, Saturação, Luminosidade)",

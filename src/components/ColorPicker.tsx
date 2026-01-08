@@ -4,24 +4,35 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   RotateCcw,
   Pipette,
   Clipboard,
   Lightbulb,
   Save,
+  Palette,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useColorFlowContext } from "@/contexts/ColorFlowContext";
 import { useEyeDropper } from "@/hooks/useEyeDropper";
 import { HSLSliders } from "./HSLSliders";
+import type { ColorHarmony } from "@/lib/colorUtils";
 
 export function ColorPicker() {
   const { t } = useTranslation();
   const {
     baseColor,
     colorName,
+    harmony,
     updateBaseColor,
     updateColorName,
+    updateHarmony,
     randomColor,
     pasteColor,
     savePalette,
@@ -149,6 +160,30 @@ export function ColorPicker() {
             </div>
           </div>
         </aside>
+
+        <div className="mb-4">
+          <Label htmlFor="harmony-select" className="block text-sm font-medium mb-2">
+            {t("colorPicker.colorHarmony")}
+          </Label>
+          <Select
+            value={harmony}
+            onValueChange={(value) => updateHarmony(value as ColorHarmony)}
+          >
+            <SelectTrigger id="harmony-select" className="w-full" aria-label={t("colorPicker.colorHarmony")}>
+              <div className="flex items-center gap-2">
+                <Palette className="w-4 h-4" aria-hidden="true" />
+                <SelectValue />
+              </div>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="monochromatic">{t("colorPicker.harmony.monochromatic")}</SelectItem>
+              <SelectItem value="complementary">{t("colorPicker.harmony.complementary")}</SelectItem>
+              <SelectItem value="analogous">{t("colorPicker.harmony.analogous")}</SelectItem>
+              <SelectItem value="triadic">{t("colorPicker.harmony.triadic")}</SelectItem>
+              <SelectItem value="tetradic">{t("colorPicker.harmony.tetradic")}</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
         <HSLSliders />
 

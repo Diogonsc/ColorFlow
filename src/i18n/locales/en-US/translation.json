@@ -31,7 +31,15 @@
     "tipText": "Press <kbd>Ctrl+V</kbd> or <kbd>⌘+V</kbd> to paste copied colors (HEX, RGB, HSL)",
     "variableName": "Variable Name",
     "variableNamePlaceholder": "primary",
-    "savePalette": "Save Palette"
+    "savePalette": "Save Palette",
+    "colorHarmony": "Color Harmony",
+    "harmony": {
+      "monochromatic": "Monochromatic",
+      "complementary": "Complementary",
+      "analogous": "Analogous",
+      "triadic": "Triadic",
+      "tetradic": "Tetradic"
+    }
   },
   "colorScale": {
     "title": "Color Scale",
@@ -40,9 +48,13 @@
     "visualAriaLabel": "Visual color scale",
     "selectColor": "Click to select {{hex}}",
     "copyHex": "Copy hexadecimal code {{hex}}",
-    "colorLabel": "Color {{scale}}: {{hex}}{{selected}}",
+    "colorLabel": "Color {{scale}}: {{hex}}{{selected}}{{base}}",
     "selected": ", selected",
-    "scaleValues": "Scale values"
+    "base": ", base color",
+    "scaleValues": "Scale values",
+    "baseColor": "Base Color",
+    "baseColorIndicator": "This is the chosen base color (scale 500)",
+    "editColor": "Edit color {{scale}}"
   },
   "hsl": {
     "controls": "HSL Controls (Hue, Saturation, Lightness)",

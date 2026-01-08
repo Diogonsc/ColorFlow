@@ -1,13 +1,14 @@
 import { createContext, useContext } from "react";
 import type { ReactNode } from "react";
 import { useColorFlow, type SavedPalette } from "@/hooks/useColorFlow";
-import type { HSL, ColorScale } from "@/lib/colorUtils";
+import type { HSL, ColorScale, ColorHarmony } from "@/lib/colorUtils";
 
 interface ColorFlowContextType {
   baseColor: string;
   colorName: string;
   hsl: HSL;
   colorScale: ColorScale;
+  harmony: ColorHarmony;
   selectedColor: string | null;
   savedPalettes: SavedPalette[];
   favorites: string[];
@@ -16,6 +17,8 @@ interface ColorFlowContextType {
   updateBaseColor: (hex: string) => void;
   updateHSL: (type: keyof HSL, value: number) => void;
   updateColorName: (name: string) => void;
+  updateHarmony: (harmony: ColorHarmony) => void;
+  updateColorInScale: (scale: number, hex: string) => void;
   selectColor: (hex: string) => void;
   savePalette: () => void;
   loadPalette: (palette: SavedPalette) => void;
