@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ADSENSE_CONFIG } from '@/config/adsense';
 
-interface AdSenseProps {
+export interface AdSenseProps {
   /**
    * ID único do slot de anúncio
    */
@@ -68,6 +68,9 @@ export function AdSense({
   useEffect(() => {
     // Não inicializar em desenvolvimento ou se já foi inicializado
     if (!ADSENSE_CONFIG.enabled || adInitialized.current || !adRef.current) {
+      if (!ADSENSE_CONFIG.enabled) {
+        setShouldHide(true);
+      }
       return;
     }
 
@@ -96,14 +99,43 @@ export function AdSense({
 
     // Timeout para verificar se o anúncio carregou
     const checkTimeout = setTimeout(() => {
-      if (!insRef.current) return;
+      if (!insRef.current || !adRef.current) return;
 
       // Verifica se há conteúdo no elemento ins
       const hasContent = insRef.current.children.length > 0 || 
                         insRef.current.offsetHeight > 0 ||
                         insRef.current.innerHTML.trim().length > 0;
 
-      if (hasContent) {
+      // Verifica se há iframes vazios
+      const iframes = adRef.current.querySelectorAll('iframe');
+      let hasValidIframe = false;
+      iframes.forEach((iframe) => {
+        // Verifica se o iframe tem conteúdo ou se não está vazio
+        if (iframe.contentDocument && iframe.contentDocument.body) {
+          const bodyContent = iframe.contentDocument.body.innerHTML.trim();
+          if (bodyContent.length > 0) {
+            hasValidIframe = true;
+          }
+        }
+        // Se o iframe tem altura/largura significativa, considera válido
+        if (iframe.offsetWidth > 10 && iframe.offsetHeight > 10) {
+          // Verifica se não é apenas um iframe vazio do AdSense
+          const iframeId = iframe.id || '';
+          let iframeBodyContent = '';
+          try {
+            if (iframe.contentDocument && iframe.contentDocument.body) {
+              iframeBodyContent = iframe.contentDocument.body.innerHTML.trim();
+            }
+          } catch (e) {
+            // Cross-origin
+          }
+          if (!iframeId.includes('aswift') || iframeBodyContent.length > 0) {
+            hasValidIframe = true;
+          }
+        }
+      });
+
+      if (hasContent || hasValidIframe) {
         setAdLoaded(true);
       } else {
         // Se após 3 segundos não houver conteúdo, oculta o espaço
@@ -115,13 +147,31 @@ export function AdSense({
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.addedNodes.length > 0 || mutation.type === 'childList') {
-          const hasContent = insRef.current && (
-            insRef.current.children.length > 0 ||
-            insRef.current.offsetHeight > 0 ||
-            insRef.current.innerHTML.trim().length > 0
-          );
+          if (!insRef.current || !adRef.current) return;
           
-          if (hasContent) {
+          const hasContent = insRef.current.children.length > 0 ||
+            insRef.current.offsetHeight > 0 ||
+            insRef.current.innerHTML.trim().length > 0;
+
+          // Verifica iframes
+          const iframes = adRef.current.querySelectorAll('iframe');
+          let hasValidIframe = false;
+          iframes.forEach((iframe) => {
+            if (iframe.contentDocument && iframe.contentDocument.body) {
+              const bodyContent = iframe.contentDocument.body.innerHTML.trim();
+              if (bodyContent.length > 0) {
+                hasValidIframe = true;
+              }
+            }
+            if (iframe.offsetWidth > 10 && iframe.offsetHeight > 10) {
+              const iframeId = iframe.id || '';
+              if (!iframeId.includes('aswift') || (iframe.contentDocument && iframe.contentDocument.body.innerHTML.trim().length > 0)) {
+                hasValidIframe = true;
+              }
+            }
+          });
+          
+          if (hasContent || hasValidIframe) {
             setAdLoaded(true);
             observer.disconnect();
             clearTimeout(checkTimeout);

@@ -9,7 +9,7 @@ import { ColorScaleDetails } from "@/components/ColorScaleDetails";
 import { ExportSection } from "@/components/ExportSection";
 import { SavedPalettes } from "@/components/SavedPalettes";
 import { LanguageSelector } from "@/components/LanguageSelector";
-import { AdSense } from "@/components/AdSense";
+import { AdSenseWrapper } from "@/components/AdSenseWrapper";
 import { ADSENSE_CONFIG } from "@/config/adsense";
 // import { UIPreview } from "@/components/UIPreview";
 import logo from "@/assets/logo-eleven.png";
@@ -52,14 +52,14 @@ function AppContent() {
       <div className="flex gap-4 max-w-7xl mx-auto px-4 py-6 items-start">
         {/* Anúncio lateral esquerda - oculto em mobile */}
         {ADSENSE_CONFIG.enabled && (
-          <aside className="hidden lg:block w-48 xl:w-64 flex-shrink-0 sticky top-6 self-start" aria-label={t("aria.adLeft")}>
-            <AdSense
-              adSlot={ADSENSE_CONFIG.adSlots.sidebarLeft}
-              format="vertical"
-              width={ADSENSE_CONFIG.sizes.vertical.width}
-              height={ADSENSE_CONFIG.sizes.vertical.height}
-            />
-          </aside>
+          <AdSenseWrapper
+            containerClassName="hidden lg:block w-48 xl:w-64 flex-shrink-0 sticky top-6 self-start"
+            ariaLabel={t("aria.adLeft")}
+            adSlot={ADSENSE_CONFIG.adSlots.sidebarLeft}
+            format="vertical"
+            width={ADSENSE_CONFIG.sizes.vertical.width}
+            height={ADSENSE_CONFIG.sizes.vertical.height}
+          />
         )}
 
         {/* Conteúdo principal */}
@@ -84,13 +84,13 @@ function AppContent() {
 
           {/* Anúncio abaixo do header - apenas em mobile */}
           {ADSENSE_CONFIG.enabled && (
-            <aside className="mb-6 lg:hidden" aria-label={t("aria.ad")}>
-              <AdSense
-                adSlot={ADSENSE_CONFIG.adSlots.mobileHeader}
-                format="horizontal"
-                className="my-6"
-              />
-            </aside>
+            <AdSenseWrapper
+              containerClassName="mb-6 lg:hidden"
+              ariaLabel={t("aria.ad")}
+              adSlot={ADSENSE_CONFIG.adSlots.mobileHeader}
+              format="horizontal"
+              className="my-6"
+            />
           )}
 
           {showPalettes && (
@@ -127,28 +127,26 @@ function AppContent() {
 
           {/* Anúncio no final da página */}
           {ADSENSE_CONFIG.enabled && (
-            <aside className="mt-8" aria-label={t("aria.ad")}>
-              <AdSense
-                adSlot={ADSENSE_CONFIG.adSlots.pageFooter}
-                format="horizontal"
-                className="my-6"
-              />
-            </aside>
+            <AdSenseWrapper
+              containerClassName="mt-8"
+              ariaLabel={t("aria.ad")}
+              adSlot={ADSENSE_CONFIG.adSlots.pageFooter}
+              format="horizontal"
+              className="my-6"
+            />
           )}
         </main>
 
         {/* Anúncio lateral direita - oculto em mobile */}
         {ADSENSE_CONFIG.enabled && (
-          <aside className="hidden lg:block w-48 xl:w-64 flex-shrink-0 sticky top-6 self-start" aria-label={t("aria.adRight")}>
-            <div className="flex justify-end">
-              <AdSense
-                adSlot={ADSENSE_CONFIG.adSlots.sidebarRight}
-                format="vertical"
-                width={ADSENSE_CONFIG.sizes.vertical.width}
-                height={ADSENSE_CONFIG.sizes.vertical.height}
-              />
-            </div>
-          </aside>
+          <AdSenseWrapper
+            containerClassName="hidden lg:block w-48 xl:w-64 flex-shrink-0 sticky top-6 self-start"
+            ariaLabel={t("aria.adRight")}
+            adSlot={ADSENSE_CONFIG.adSlots.sidebarRight}
+            format="vertical"
+            width={ADSENSE_CONFIG.sizes.vertical.width}
+            height={ADSENSE_CONFIG.sizes.vertical.height}
+          />
         )}
       </div>
     </div>
